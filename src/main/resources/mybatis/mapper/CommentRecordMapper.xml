@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sk.brook.dao.mapper.CommentRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.sk.brook.dao.domain.CommentRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="web_id" property="webId" jdbcType="INTEGER" />
+    <result column="comment_des" property="commentDes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, web_id, comment_des
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from comment_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByWebId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from comment_record
+    where web_id = #{webId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comment_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sk.brook.dao.domain.CommentRecord" >
+    insert into comment_record (id, web_id, comment_des
+      )
+    values (#{id,jdbcType=INTEGER}, #{webId,jdbcType=INTEGER}, #{commentDes,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sk.brook.dao.domain.CommentRecord" >
+    insert into comment_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webId != null" >
+        web_id,
+      </if>
+      <if test="commentDes != null" >
+        comment_des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webId != null" >
+        #{webId,jdbcType=INTEGER},
+      </if>
+      <if test="commentDes != null" >
+        #{commentDes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sk.brook.dao.domain.CommentRecord" >
+    update comment_record
+    <set >
+      <if test="webId != null" >
+        web_id = #{webId,jdbcType=INTEGER},
+      </if>
+      <if test="commentDes != null" >
+        comment_des = #{commentDes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sk.brook.dao.domain.CommentRecord" >
+    update comment_record
+    set web_id = #{webId,jdbcType=INTEGER},
+      comment_des = #{commentDes,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

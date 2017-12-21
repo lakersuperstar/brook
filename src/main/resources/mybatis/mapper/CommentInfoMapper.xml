@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sk.brook.dao.mapper.CommentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sk.brook.dao.domain.CommentInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="web_id" property="webId" jdbcType="INTEGER" />
+    <result column="comment_des" property="commentDes" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="ver" property="ver" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, web_id, comment_des, create_date, ver
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from comment_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByWebId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from comment_info
+    where web_id = #{webId,jdbcType=INTEGER} order by ver limit 1
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comment_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sk.brook.dao.domain.CommentInfo" >
+    insert into comment_info (id, web_id, comment_des, 
+      create_date, ver)
+    values (#{id,jdbcType=INTEGER}, #{webId,jdbcType=INTEGER}, #{commentDes,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{ver,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sk.brook.dao.domain.CommentInfo" >
+    insert into comment_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webId != null" >
+        web_id,
+      </if>
+      <if test="commentDes != null" >
+        comment_des,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="ver != null" >
+        ver,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webId != null" >
+        #{webId,jdbcType=INTEGER},
+      </if>
+      <if test="commentDes != null" >
+        #{commentDes,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ver != null" >
+        #{ver,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sk.brook.dao.domain.CommentInfo" >
+    update comment_info
+    <set >
+      <if test="webId != null" >
+        web_id = #{webId,jdbcType=INTEGER},
+      </if>
+      <if test="commentDes != null" >
+        comment_des = #{commentDes,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ver != null" >
+        ver = #{ver,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <update id="updateDesByWebId" parameterType="com.sk.brook.dao.domain.CommentInfo" >
+    update comment_info
+        SET comment_des = #{commentDes,jdbcType=VARCHAR},
+        create_date = now()
+    where web_id = #{webId,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.sk.brook.dao.domain.CommentInfo" >
+    update comment_info
+    set web_id = #{webId,jdbcType=INTEGER},
+      comment_des = #{commentDes,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      ver = #{ver,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="increaseVer" parameterType="int" >
+    update comment_info
+    set
+    ver = ver + 1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

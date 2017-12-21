@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sk.brook.dao.mapper.WebCookieMapper" >
+    <resultMap id="BaseResultMap" type="com.sk.brook.dao.domain.WebCookie" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="cookie_name" property="cookieName" jdbcType="VARCHAR"/>
+        <result column="cookie_value" property="cookieValue" jdbcType="VARCHAR"/>
+        <result column="web_domain" property="webDomain" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="web_id" property="webId" jdbcType="INTEGER"/>
+        <result column="yn" property="yn" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="expire_date" property="expireDate" jdbcType="DATE"/>
+        <result column="create_date" property="createDate" jdbcType="DATE"/>
+
+
+    </resultMap>
+
+    <sql  id="Base_Column_List" >
+        id,cookie_name,cookie_value,web_domain,path,web_id,yn,expire_date,create_date,status
+    </sql>
+
+    <insert id="insert" parameterType="com.sk.brook.dao.domain.WebCookie">
+        insert into web_cookie (cookie_name,cookie_value,web_domain,path,web_id,yn,status,expire_date,create_date) VALUES
+        (#{cookidName},#{cookieValue},#{webDomain},#{path},#{webId},1,0,#{expireDate},now())
+
+    </insert>
+
+    <select id="findWebCookie" resultMap="BaseResultMap" parameterType="int">
+        select <include refid="Base_Column_List"/> from web_cookie where web_id = #{webId}
+    </select>
+    <select id="deleteByWebId" parameterType="int">
+        delete from web_cookie where web_id = #{webId}
+    </select>
+
+    <update id="setExpireCookie" parameterType="int">
+        update web_cookie set status = -1 where web_id = #{webId}
+    </update>
+
+
+    <update id="setUsedCookie" parameterType="int">
+        update web_cookie set status = 0 where web_id = #{webId}
+    </update>
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sk.brook.dao.mapper.WebInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sk.brook.dao.domain.WebInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="web_main_index" property="webMainIndex" jdbcType="VARCHAR" />
+    <result column="web_me_index" property="webMeIndex" jdbcType="VARCHAR" />
+    <result column="pin" property="pin" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="yn" property="yn" jdbcType="INTEGER" />
+    <result column="web_login" property="webLogin" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, web_main_index, web_me_index, pin, create_date, yn,web_login,user_name,user_pwd
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from web_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from web_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sk.brook.dao.domain.WebInfo" >
+    insert into web_info (id, web_main_index, web_me_index, 
+      pin, create_date, yn,web_login
+      )
+    values (#{id,jdbcType=INTEGER}, #{webMainIndex,jdbcType=VARCHAR}, #{webMeIndex,jdbcType=VARCHAR}, 
+      #{pin,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{yn,jdbcType=INTEGER},#{webLogin,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sk.brook.dao.domain.WebInfo" >
+    insert into web_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webMainIndex != null" >
+        web_main_index,
+      </if>
+      <if test="webMeIndex != null" >
+        web_me_index,
+      </if>
+      <if test="pin != null" >
+        pin,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="yn != null" >
+        yn,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webMainIndex != null" >
+        #{webMainIndex,jdbcType=VARCHAR},
+      </if>
+      <if test="webMeIndex != null" >
+        #{webMeIndex,jdbcType=VARCHAR},
+      </if>
+      <if test="pin != null" >
+        #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yn != null" >
+        #{yn,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sk.brook.dao.domain.WebInfo" >
+    update web_info
+    <set >
+      <if test="webMainIndex != null" >
+        web_main_index = #{webMainIndex,jdbcType=VARCHAR},
+      </if>
+      <if test="webMeIndex != null" >
+        web_me_index = #{webMeIndex,jdbcType=VARCHAR},
+      </if>
+      <if test="pin != null" >
+        pin = #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yn != null" >
+        yn = #{yn,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sk.brook.dao.domain.WebInfo" >
+    update web_info
+    set web_main_index = #{webMainIndex,jdbcType=VARCHAR},
+      web_me_index = #{webMeIndex,jdbcType=VARCHAR},
+      pin = #{pin,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      yn = #{yn,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

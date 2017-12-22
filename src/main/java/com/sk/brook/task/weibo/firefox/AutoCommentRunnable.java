@@ -1,6 +1,7 @@
 package com.sk.brook.task.weibo.firefox;
 
 import com.sk.brook.constants.CookieConstants;
+import com.sk.brook.constants.WebDriverConstants;
 import com.sk.brook.dao.domain.CommentInfo;
 import com.sk.brook.dao.domain.WebCookie;
 import com.sk.brook.dao.domain.WebInfo;
@@ -12,10 +13,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.events.Comment;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -52,14 +55,10 @@ public class AutoCommentRunnable implements Runnable {
         try {
             if (this.isRunnable()) {
                 FirefoxOptions options = new FirefoxOptions();
-//                options.addArguments("--headless");
-//                options.setHeadless(true);
-
+                options.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,true);
+                //options.setBinary("D:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
                 System.setProperty("webdriver.gecko.driver",
-                        "/Users/songk/WorkTools/geckodriver");
-//                System.setProperty("webdriver.firefox.marionette",
-//                        "/Users/songk/WorkTools/geckodriver");
-//                System.setProperty("","")
+                        WebDriverConstants.fire_fox_0_19_1);
                 driver = new FirefoxDriver(options);
                 driver.manage().window().maximize();
                 this.executeStart();
@@ -107,6 +106,7 @@ public class AutoCommentRunnable implements Runnable {
      * 设置登陆cookie
      */
     private void setCookie() {
+        logger.info("设置Cookie开始");
         List<WebCookie> webCookies = this.serviceHolder.getWebCookieService().findWebCookie(webTask.getWebId());
         if(webCookies == null || webCookies.size() == 0){
             return;
@@ -133,10 +133,10 @@ public class AutoCommentRunnable implements Runnable {
      */
     private boolean openMeIndex() {
         driver.get(this.meIndex);
-        this.sleep3s();
+        this.sleep(5000);
         logger.info("打开的我的微博页面。。。。。" + driver.getCurrentUrl());
         String url = driver.getCurrentUrl();
-        if (webInfo.getWebLogin() != null && url.contains(webInfo.getWebLogin())) {
+        if (webInfo.getWebLogin() != null && ( url.contains(webInfo.getWebLogin()) || url.contains("passport"))) {
             if(this.submitWeb()){
                 driver.get(this.meIndex);
                 this.sleep3s();
@@ -242,20 +242,22 @@ public class AutoCommentRunnable implements Runnable {
      * @return
      */
     public boolean submitWeb() {
-        driver.get(webInfo.getWebLogin());
+        //driver.get(webInfo.getWebLogin());
         logger.info("已经打开登陆页面：" + driver.getCurrentUrl());
-        this.sleep(5000);
-        WebElement loginName = driver.findElement(By.id("loginName"));
-        this.sleep(5000);
+        this.sleep(10000);
+        WebElement loginName = driver.findElement(By.id("loginname"));
+        this.sleep(10000);
         loginName.sendKeys(webInfo.getUserName());
         this.sleep(5000);
-        WebElement loginPassword = driver.findElement(By.id("loginPassword"));
-        this.sleep(5000);
+        WebElement loginPassword = driver.findElement(By.name("password"));
+        this.sleep(10000);
         loginPassword.sendKeys(webInfo.getUserPwd());
         this.sleep(5000);
-        WebElement submit = driver.findElement(By.id("loginAction"));
+        WebElement submit = driver.findElement(By.cssSelector("a.W_btn_a.btn_32px"));
+        System.out.print(submit.getText());
+//        WebElement submit = driver.findElement(By.id("loginAction"));
         this.sleep(5000);
-        submit.submit();
+        submit.click();
         this.sleep(10000);
         String url = driver.getCurrentUrl();
         if (url.contains(webInfo.getWebLogin())) {
@@ -270,15 +272,23 @@ public class AutoCommentRunnable implements Runnable {
      */
     private void getAndSaveCookie(){
         this.serviceHolder.getWebCookieMapper().deleteByWebId(this.webInfo.getId());
+        Calendar cl = Calendar.getInstance();
+        cl.add(Calendar.YEAR,1);
+
         for(String cookieName : CookieConstants.WEB_COOKIE_NAME_SET){
             Cookie cookie = driver.manage().getCookieNamed(cookieName);
             WebCookie webCookie = new WebCookie();
             if(cookie != null){
                 webCookie.setCookieName(cookie.getName());
                 webCookie.setCookieValue(cookie.getValue());
-                webCookie.setExpireDate(cookie.getExpiry());
+                webCookie.setExpireDate(cl.getTime());
                 webCookie.setPath(cookie.getPath());
-                webCookie.setWebDomain(cookie.getDomain());
+                String domain = cookie.getDomain();
+                if(domain.startsWith(".")){
+                    webCookie.setWebDomain(domain.substring(1));
+                }else{
+                    webCookie.setWebDomain(cookie.getDomain());
+                }
                 webCookie.setWebId(this.webInfo.getId());
                 this.serviceHolder.getWebCookieMapper().insert(webCookie);
             }

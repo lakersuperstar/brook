@@ -22,7 +22,7 @@
 
     <insert id="insert" parameterType="com.sk.brook.dao.domain.WebCookie">
         insert into web_cookie (cookie_name,cookie_value,web_domain,path,web_id,yn,status,expire_date,create_date) VALUES
-        (#{cookidName},#{cookieValue},#{webDomain},#{path},#{webId},1,0,#{expireDate},now())
+        (#{cookieName},#{cookieValue},#{webDomain},#{path},#{webId},1,0,#{expireDate},now())
 
     </insert>
 

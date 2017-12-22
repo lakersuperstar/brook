@@ -3,6 +3,7 @@ package com.sk.brook;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -31,13 +32,22 @@ public class TestWeiboComSe {
         //js支持
         dcaps.setJavascriptEnabled(true);
         //驱动支持
-        dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,"/Users/songk/WorkTools/phantomjs-2.1.1-macosx/bin/phantomjs");
+        dcaps.setCapability("webdriver.firefox.bin","D:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
 
 //        PhantomJSDriver driver = new PhantomJSDriver(dcaps);
 
+        //System.setProperty("webdriver.gecko.driver",
+          //      "/Users/songk/WorkTools/geckodriver");
+
+
+        FirefoxOptions options = new FirefoxOptions();
+
+        options.setBinary("D:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
         System.setProperty("webdriver.gecko.driver",
-                "/Users/songk/WorkTools/geckodriver");
-        WebDriver  driver = new FirefoxDriver();
+                "D:\\tools\\geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver",
+                "D:\\tools\\geckodriver.exe");
+        WebDriver  driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
         //与浏览器同步非常重要，必须等待浏览器加载完毕
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

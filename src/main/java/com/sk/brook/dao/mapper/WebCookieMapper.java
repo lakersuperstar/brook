@@ -13,6 +13,6 @@ public interface WebCookieMapper {
 
     int insert(WebCookie webCookie);
 
-    int deleteByWebId(int webId);
+    void deleteByWebId(int webId);
 
 }

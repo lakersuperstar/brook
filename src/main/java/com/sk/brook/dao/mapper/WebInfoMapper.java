@@ -14,4 +14,6 @@ public interface WebInfoMapper {
     int updateByPrimaryKeySelective(WebInfo record);
 
     int updateByPrimaryKey(WebInfo record);
+
+    WebInfo findWebInfoByLoginUserName(String userName);
 }

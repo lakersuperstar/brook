@@ -5,5 +5,30 @@ package com.sk.brook.controller.vo;
  */
 public class CommentInfoVO {
     private    String userName;
-//    private String
+    private    String commentInfo;
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCommentInfo() {
+        return commentInfo;
+    }
+
+    public void setCommentInfo(String commentInfo) {
+        this.commentInfo = commentInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentInfoVO{" +
+                "userName='" + userName + '\'' +
+                ", commentInfo='" + commentInfo + '\'' +
+                '}';
+    }
 }

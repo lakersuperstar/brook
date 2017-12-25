@@ -7,6 +7,7 @@ public class UserInfo {
 
     private String userName;
     private String password;
+    private String meIndex;
 
     public String getUserName() {
         return userName;
@@ -24,11 +25,20 @@ public class UserInfo {
         this.password = password;
     }
 
+    public String getMeIndex() {
+        return meIndex;
+    }
+
+    public void setMeIndex(String meIndex) {
+        this.meIndex = meIndex;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
                 "userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", meIndex='" + meIndex + '\'' +
                 '}';
     }
 }

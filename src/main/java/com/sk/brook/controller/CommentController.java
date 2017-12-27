@@ -7,7 +7,9 @@ import com.sk.brook.dao.mapper.CommentRecordMapper;
 import com.sk.brook.dao.mapper.WebInfoMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -23,21 +25,31 @@ public class CommentController {
     @Resource(name="webInfoMapper")
     private WebInfoMapper webInfoMapper;
 
-    @PostMapping("/comment/add")
-    private String addComment(CommentInfoVO infoVO){
+    @GetMapping("/comment/edit")
+    private String toAddComment(){
+        return "addcomment";
+    }
 
+    @PostMapping("/comment/add")
+    @ResponseBody
+    private String addComment(CommentInfoVO infoVO){
         if(infoVO == null || StringUtils.isBlank(infoVO.getCommentInfo()) || StringUtils.isBlank(infoVO.getUserName())){
-            return "";
+            return "nullerror";
         }
-        CommentRecord cr = new CommentRecord();
-        cr.setCommentDes(infoVO.getCommentInfo());
-        WebInfo webInfo = webInfoMapper.findWebInfoByLoginUserName(infoVO.getUserName());
-        if(webInfo != null){
-            cr.setWebId(webInfo.getId());
-        }else{
-            return "";
+        try{
+            CommentRecord cr = new CommentRecord();
+            cr.setCommentDes(infoVO.getCommentInfo());
+            WebInfo webInfo = webInfoMapper.findWebInfoByLoginUserName(infoVO.getUserName());
+            if(webInfo != null){
+                cr.setWebId(webInfo.getId());
+            }else{
+                return "nameerror";
+            }
+            commentRecordMapper.insert(cr);
+            return "addsuccess";
+        }catch (Exception e){
+            return "error";
         }
-        commentRecordMapper.insert(cr);
-        return "";
+
     }
 }

@@ -25,12 +25,12 @@
     delete from web_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.sk.brook.dao.domain.WebInfo" >
-    insert into web_info (id, web_main_index, web_me_index, 
-      pin, create_date, yn,web_login
+  <insert id="insert" parameterType="com.sk.brook.dao.domain.WebInfo">
+    insert into web_info ( web_main_index, web_me_index,
+      pin, create_date, yn,web_login,user_name,user_pwd
       )
-    values (#{id,jdbcType=INTEGER}, #{webMainIndex,jdbcType=VARCHAR}, #{webMeIndex,jdbcType=VARCHAR}, 
-      #{pin,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{yn,jdbcType=INTEGER},#{webLogin,jdbcType=VARCHAR}
+    values ( #{webMainIndex,jdbcType=VARCHAR}, #{webMeIndex,jdbcType=VARCHAR},
+      #{pin,jdbcType=VARCHAR}, now(), 1,#{webLogin,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{userPwd,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sk.brook.dao.domain.WebInfo" >
@@ -107,10 +107,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="findWebInfoByLoginUserName" parameterType="String" resultMap="com.sk.brook.dao.domain.WebInfo">
+  <select id="findWebInfoByLoginUserName" parameterType="String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from web_info
-    where web_login = #{loginName,jdbcType=VARCHAR}
+    where user_name = #{loginName,jdbcType=VARCHAR}
   </select>
 </mapper>

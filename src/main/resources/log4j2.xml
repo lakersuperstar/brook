@@ -7,6 +7,11 @@
     <appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${PATTERN}"/>
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+                <ThresholdFilter level="ERROR" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+            </Filters>
         </Console>
 
         <RollingFile name="FILE" fileName="/home/brook/logInfo.log"  immediateFlush="false"
@@ -14,7 +19,7 @@
             <PatternLayout pattern="${PATTERN}"/>
 
             <Filters>
-                <ThresholdFilter level="INFO" onMatch="" onMismatch="DENY" />
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
                 <ThresholdFilter level="ERROR" onMatch="DENY"
                                  onMismatch="NEUTRAL" />
             </Filters>
@@ -27,10 +32,10 @@
 
 
     <Loggers>
-            <AsyncRoot level="INFO" additivity="false">
-            <appender-ref ref="Console"/>
-            <appender-ref ref="FILE"/>
-            </AsyncRoot>
+            <root level="INFO" additivity="false">
+                <appenderref ref="Console"/>
+                <appenderref ref="FILE"/>
+            </root>
     </Loggers>
 </configuration>
 

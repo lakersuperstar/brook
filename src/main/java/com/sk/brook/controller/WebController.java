@@ -3,10 +3,12 @@ package com.sk.brook.controller;
 import com.sk.brook.controller.vo.UserInfo;
 import com.sk.brook.dao.domain.WebInfo;
 import com.sk.brook.dao.mapper.WebInfoMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -23,23 +25,39 @@ public class WebController {
 
     @GetMapping("/user/edit")
     public String toaddWeb(){
-        return "addWeb";
+        return "addweb";
     }
 
 
 
 
     @PostMapping("/user/add")
+    @ResponseBody
     public String addWeb(UserInfo userInfo){
+       if(userInfo == null || StringUtils.isBlank(userInfo.getPassword())|| StringUtils.isBlank(userInfo.getUserName()) ){
+           return "登录名和密码不能为空！";
+       }
         WebInfo webInfo = new WebInfo();
         webInfo.setUserName(userInfo.getUserName());
         webInfo.setUserPwd(userInfo.getPassword());
         webInfo.setWebLogin("login");
         webInfo.setWebMainIndex("https://weibo.com");
-        webInfo.setWebMainIndex(userInfo.getMeIndex());
-        webInfoMapper.insert(webInfo);
-        return "addsuccess";
+        if(StringUtils.isBlank(userInfo.getMeIndex())){
+            webInfo.setWebMeIndex("https://weibo.com");
+        }else{
+            webInfo.setWebMeIndex(userInfo.getMeIndex());
+        }
+        try{
+            webInfoMapper.insert(webInfo);
+            return "addsuccess";
+        }catch (Exception e){
+            if(e.getMessage().contains("Duplicate entry")){
+                return "unique fail";
+            }else{
+                return "error";
+            }
+        }
+
+
     }
-
-
 }

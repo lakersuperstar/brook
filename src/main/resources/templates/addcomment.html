@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>增加用户</title>
+    <link rel="stylesheet" href="/static/style/weui.css"/>
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script>
+		//ajax提交form表单的方式
+		function addUser(){
+                    var AjaxURL= "/comment/add.action";
+                    var name = $("#userName").val();
+                    var commentInfo = $("#commentInfo").val();
+                    if(name == '' || name == ""){
+
+                        $("#success-des").text("用户名不能为空");
+                        $("#success-des").show();
+                        return;
+                    }
+                    if(commentInfo == '' || commentInfo == "")
+                    {
+                     $("#success-des").text("评论不能为空");
+                     $("#success-des").show();
+                     return;
+                     }
+                        $.ajax({
+                            type: "POST",
+                            dataType: "text",
+                            url: AjaxURL,
+                            data: $('#addUserForm').serialize(),
+                            success: function (data) {
+                                var strresult=data;
+                                 $("#success-des").text("");
+                                if(data!=null && data != '' && data == "addsuccess"){
+                                     $("#success-des").text("成功");
+                                     $("#showTooltips").hide();
+                                      $("#addNext").show();
+                                }else{
+                                 if(data == "nameerror"){
+                                    $("#success-des").text("该用户名未注册过");
+                                }else{
+                                  $("#success-des").text("保存异常");
+                                }}
+                                $("#success-des").show();
+
+                            },
+                            error: function(data) {
+                                $("#success-des").text("保存异常");
+                                $("#success-des").show();
+                             }
+                        });
+
+}
+
+function addNext(){
+    $("#addNext").hide();
+    $("#success-des").hide();
+    $("#commentInfo").val("");
+    $("#showTooltips").show();
+}
+
+    </script>
+</head>
+<body>
+<form id="addUserForm" >
+<div class="page__bd">
+<div class="weui-cells__title">网站登录用户名</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <input class="weui-input" name="userName" id="userName" type="text" placeholder="用户名"/>
+        </div>
+    </div>
+</div>
+    <div class="weui-cells__title">评论的内容</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请输入评论" name="commentInfo" id="commentInfo" rows="3"></textarea>
+                <div class="weui-textarea-counter"><span>0</span>/200</div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="weui-btn-area">
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips" onclick="addUser()">确定</a>
+    <a href_="return" class="weui-btn weui-btn_default" id="success-des" hidden></a>
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="addNext" onclick="addNext()" style="display:none">再次添加</a>
+</div>
+</div></form>
+
+</body>
+</html>

@@ -4,6 +4,7 @@ package com.sk.brook.controller.vo;
  * Created by songk on 17/12/24.
  */
 public class CommentInfoVO {
+    private    int commentId;
     private    String userName;
     private    String commentInfo;
 
@@ -24,10 +25,19 @@ public class CommentInfoVO {
         this.commentInfo = commentInfo;
     }
 
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
+
     @Override
     public String toString() {
         return "CommentInfoVO{" +
-                "userName='" + userName + '\'' +
+                "commentId=" + commentId +
+                ", userName='" + userName + '\'' +
                 ", commentInfo='" + commentInfo + '\'' +
                 '}';
     }

@@ -7,11 +7,12 @@ import com.sk.brook.dao.mapper.CommentRecordMapper;
 import com.sk.brook.dao.mapper.WebInfoMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by songk on 17/12/24.
@@ -52,4 +53,43 @@ public class CommentController {
         }
 
     }
+
+    @GetMapping("/comment/list")
+    private ModelAndView toListComment(String u){
+        ModelAndView view = new ModelAndView();
+        view.setViewName("commentlist");
+        List<CommentInfoVO> commentInfoVOList = new ArrayList<CommentInfoVO>();
+        System.out.println(u);
+        if(StringUtils.isBlank(u)){
+            view.addObject("status","0");
+            return view;
+        }
+        try{
+            WebInfo webInfo = webInfoMapper.findWebInfoByLoginUserName(u);
+            if(webInfo != null){
+                List<CommentRecord>  commentRecord = commentRecordMapper.selectByWebId(webInfo.getId());
+                if(commentRecord != null){
+                    for(CommentRecord cr : commentRecord){
+                        CommentInfoVO commentInfoVO = new CommentInfoVO();
+                        commentInfoVO.setCommentId(cr.getId());
+                        commentInfoVO.setCommentInfo(cr.getCommentDes());
+                        commentInfoVO.setUserName(u);
+                        commentInfoVOList.add(commentInfoVO);
+                    }
+                }
+                view.addObject("status","1");
+                view.addObject("li",commentInfoVOList);
+                return view;
+            }else{
+                view.addObject("status","2");
+                return view;
+            }
+        }catch (Exception e){
+            view.addObject("status","-1");
+            return view;
+        }
+
+    }
+
+
 }

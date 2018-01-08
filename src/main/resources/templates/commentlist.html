@@ -6,6 +6,12 @@
     <title>评论列表</title>
     <link rel="stylesheet" href="/static/style/weui.css"/>
     <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <style>
+        .weui-cells:before {
+            border:none;
+        }
+        .weui-cells {margin-top:0;padding-left:70px;}
+    </style>
 </head>
 <body>
 <div class="page">
@@ -30,16 +36,26 @@
 
     </div>
 </div>
-<table class="table">
-    <tbody >
-    <tr  th:each="li : ${li}">
-        <td th:text="${li.userName}">Onions</td>
-        <td th:text="${li.commentInfo}">Onions</td>
-    </tr>
+    <div class="page">
+    <div  th:each="li : ${li}" >
+        <div class="page__bd">
+        <div class="weui-cells">
+        <div class="weui-cell weui-cell_swiped">
+            <div class="weui-cell__bd" style="transform: translateX(-68px)">
+                <div class="weui-cell">
+                    <div class="weui-cell__ft" th:text="${li.commentInfo}"> </div>
+                </div>
+            </div>
+            <div class="weui-cell__ft">
+                <a class="weui-swiped-btn weui-swiped-btn_warn" href="javascript:">删除</a>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
 
-    <!-- <td th:each="userinfo:${userinfo}" th:text="${userinfo}"></td> -->
-    </tbody>
-</table>
+    </div>
+
 </body>
 
 <script type="text/javascript">

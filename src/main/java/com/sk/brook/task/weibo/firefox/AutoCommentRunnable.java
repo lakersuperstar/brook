@@ -168,7 +168,7 @@ public class AutoCommentRunnable implements Runnable {
             try {
                 success = this.handleComment(stxt.get(2));
                 //休眠30S~50S
-                this.sleep(this.getRandom(50000, 100000));
+                this.sleep3s();
             } catch (Exception e) {
                 logger.error("写入评论异常", e);
             }

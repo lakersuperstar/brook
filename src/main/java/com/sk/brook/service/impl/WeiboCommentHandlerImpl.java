@@ -46,6 +46,7 @@ public class WeiboCommentHandlerImpl implements WeiboCommentHandler {
         try{
             InetAddress address = InetAddress.getLocalHost();//获取的是本地的IP地址 //PC-20140317PXKX/192.168.0.121
             hostAddress = address.getHostAddress();
+            System.out.print(hostAddress);
         }catch (Exception e){
 
         }

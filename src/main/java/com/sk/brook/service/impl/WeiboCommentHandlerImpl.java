@@ -14,6 +14,7 @@ import com.sk.brook.task.weibo.firefox.AutoCommentRunnable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,15 @@ public class WeiboCommentHandlerImpl implements WeiboCommentHandler {
     @Override
     public List<AutoCommentRunnable> generaterRunnable() {
         List<AutoCommentRunnable> runnables = new ArrayList<AutoCommentRunnable>();
-        List<WebTask> waitTasks = webTaskMapper.findWaitingTask();
+        String hostAddress = "";
+        try{
+            InetAddress address = InetAddress.getLocalHost();//获取的是本地的IP地址 //PC-20140317PXKX/192.168.0.121
+            hostAddress = address.getHostAddress();
+        }catch (Exception e){
+
+        }
+
+        List<WebTask> waitTasks = webTaskMapper.findWaitingTaskByIp(hostAddress);
         if(waitTasks != null){
             for(WebTask webTask : waitTasks){
                 WebInfo webInfo = webInfoMapper.selectByPrimaryKey(webTask.getWebId());

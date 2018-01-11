@@ -19,10 +19,18 @@ public interface WebTaskMapper {
 
     List<WebTask> findWaitingTask();
 
+    List<WebTask> findWaitingTaskByIp(String ip);
+
     List<WebTask> findAllTask();
 
     int lockTask(int webId);
 
     int unlockTask(int webId);
+
+    void resetTaskNumPre();
+
+    void resetTaskOld();
+
+    void addSuccessNum(Integer webId);
 
 }

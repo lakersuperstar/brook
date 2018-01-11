@@ -7,10 +7,12 @@
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="all_num" property="allNum" jdbcType="INTEGER" />
     <result column="yn" property="yn" jdbcType="INTEGER" />
+    <result column="ip_str" property="ipStr" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    web_id, status, update_date, create_date, num, yn
+    web_id, status, update_date, create_date, num, yn, ip_str, all_num
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,6 +27,16 @@
     <include refid="Base_Column_List" />
     from web_task
     where yn=1 and status=0 and (NOW()-10*100) > update_date
+  </select>
+
+
+
+
+  <select id="findWaitingTaskByIp" resultMap="BaseResultMap"  parameterType="java.lang.String"  >
+    select
+    <include refid="Base_Column_List" />
+    from web_task
+    where yn=1 and status=0 and (NOW()-10*100) > update_date and update_date>= DATE_SUB(curdate(),INTERVAL 0 DAY) and ip_str=#{ipStr,jdbcType=VARCHAR} and 150 > num
   </select>
 
 
@@ -125,8 +137,7 @@
   <update id="lockTask" parameterType="int" >
     update web_task
     set status = 100,
-    update_date = now(),
-    num = num + 1
+    update_date = now()
     where web_id = #{webId,jdbcType=INTEGER} and status = 0 and (NOW()-10*100) > update_date
   </update>
 
@@ -135,4 +146,30 @@
     set status = 0
     where web_id = #{webId,jdbcType=INTEGER} and status = 100
   </update>
+
+  <update id="resetTaskNumPre" >
+    update web_task
+    set num = 0,
+    status = 0,
+    update_date = now()
+    where  DATE_SUB(curdate(),INTERVAL 0 DAY) > update_date
+  </update>
+
+
+  <update id="resetTaskOld">
+    update web_task
+    set
+    status = 0
+    where  (NOW()-20*100) > update_date and status=100
+  </update>
+
+  <update id="addSuccessNum" parameterType="int">
+    update web_task
+    set
+    num = num+1,
+    all_num = all_num+1
+    where   status=100 and web_id = #{webId,jdbcType=INTEGER}
+  </update>
+
+
 </mapper>

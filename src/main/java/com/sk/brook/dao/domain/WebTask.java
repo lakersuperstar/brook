@@ -29,9 +29,19 @@ public class WebTask {
     private int num;
 
     /**
+     * 执行总次数
+     */
+    private int allNum;
+
+    /**
      * 当前执行状态
      */
     private int status;
+
+    /**
+     * 当前任务执行IP
+     */
+    private String ipStr;
 
     public int getWebId() {
         return webId;
@@ -79,5 +89,21 @@ public class WebTask {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getIpStr() {
+        return ipStr;
+    }
+
+    public void setIpStr(String ipStr) {
+        this.ipStr = ipStr;
+    }
+
+    public int getAllNum() {
+        return allNum;
+    }
+
+    public void setAllNum(int allNum) {
+        this.allNum = allNum;
     }
 }

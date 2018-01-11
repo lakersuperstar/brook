@@ -47,7 +47,12 @@
                 </div>
             </div>
             <div class="weui-cell__ft">
-                <a class="weui-swiped-btn weui-swiped-btn_warn" href="javascript:">删除</a>
+                <form th:id="'delcom'+${li.commentId}" >
+                    <input th:value="${li.commentId}" name="commentId" hidden/>
+                    <input th:value="${li.userName}" name="userName" hidden/>
+                    <input th:value="${li.commentInfo}" name="commentInfo" hidden/>
+                <a class="weui-swiped-btn weui-swiped-btn_warn" href="javascript:" th:id="${li.commentId}"  onclick="delCom(this)">删除</a>
+                </form>
             </div>
         </div>
         </div>
@@ -91,5 +96,27 @@
             $searchInput.blur();
         });
     });
+
+
+    function delCom(obj){
+    var id = $(obj).attr("id");
+
+                    var AjaxURL= "/comment/del.action";
+                        $.ajax({
+                            type: "POST",
+                            dataType: "text",
+                            url: AjaxURL,
+                            data: $('#delcom'+id).serialize(),
+                            success: function (data) {
+                                if(data == 'success'){
+                                location.reload();
+                                }
+                            },
+                            error: function(data) {
+                               alert("删除失败");
+                             }
+                        });
+
+}
 </script>
 </html>

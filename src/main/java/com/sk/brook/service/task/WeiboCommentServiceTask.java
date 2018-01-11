@@ -73,6 +73,19 @@ public class WeiboCommentServiceTask {
         }
     }
 
+
+    @Scheduled(fixedDelay = 5 * 1000)
+    public void resetTask(){
+        try{
+            webTaskMapper.resetTaskNumPre();
+            webTaskMapper.resetTaskOld();
+        }catch (Exception e){
+            logger.error("重置没有执行成功的任务异常",e);
+        }
+    }
+
+
+
     private void executeUpdateCommentDes(){
         List<WebTask> waitTasks = webTaskMapper.findAllTask();
         if(waitTasks == null || waitTasks.size() <= 0){

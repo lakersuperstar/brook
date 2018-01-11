@@ -174,6 +174,7 @@ public class AutoCommentRunnable implements Runnable {
             }
             if (success) {
                 successCommentCount++;
+                this.serviceHolder.getWebTaskMapper().addSuccessNum(this.webInfo.getId());
             }
             if (successCommentCount == CommentPerNum.WEIBO_COMMENT_NUM) {
                 break;

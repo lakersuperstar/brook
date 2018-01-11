@@ -53,13 +53,40 @@ public class CommentController {
         }
 
     }
+    @PostMapping("/comment/del")
+    @ResponseBody
+    private String delComment(CommentInfoVO infoVO){
+        if(infoVO == null || StringUtils.isBlank(infoVO.getCommentInfo()) || infoVO.getCommentId() ==0 || StringUtils.isBlank(infoVO.getUserName())){
+            return "nullerror";
+        }
+        try{
+            WebInfo webInfo = webInfoMapper.findWebInfoByLoginUserName(infoVO.getUserName());
+            if(webInfo != null){
+                CommentRecord cr = commentRecordMapper.selectByPrimaryKey(infoVO.getCommentId());
+                if(cr!= null && cr.getWebId() == webInfo.getId()){
+                   int del =  commentRecordMapper.deleteByPrimaryKey(infoVO.getCommentId());
+                   if(del == 1){
+                       return "success";
+                   }
+                }
+            }else{
+                return "error";
+            }
+            return "error";
+        }catch (Exception e){
+            return "error";
+        }
+    }
+
+
+
 
     @GetMapping("/comment/list")
     private ModelAndView toListComment(String u){
         ModelAndView view = new ModelAndView();
         view.setViewName("commentlist");
         List<CommentInfoVO> commentInfoVOList = new ArrayList<CommentInfoVO>();
-        System.out.println(u);
+
         if(StringUtils.isBlank(u)){
             view.addObject("status","0");
             return view;

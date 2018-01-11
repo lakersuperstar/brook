@@ -11,6 +11,8 @@ import com.sk.brook.service.WebCookieService;
 import com.sk.brook.service.WeiboCommentHandler;
 import com.sk.brook.service.holder.ServiceHolder;
 import com.sk.brook.task.weibo.firefox.AutoCommentRunnable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,6 +25,8 @@ import java.util.List;
  */
 @Service
 public class WeiboCommentHandlerImpl implements WeiboCommentHandler {
+
+    private static Logger logger = LoggerFactory.getLogger(WeiboCommentHandlerImpl.class);
 
     @Resource
     private WebCookieService webCookieService;
@@ -46,9 +50,9 @@ public class WeiboCommentHandlerImpl implements WeiboCommentHandler {
         try{
             InetAddress address = InetAddress.getLocalHost();//获取的是本地的IP地址 //PC-20140317PXKX/192.168.0.121
             hostAddress = address.getHostAddress();
-            System.out.print(hostAddress);
+            logger.info(hostAddress);
         }catch (Exception e){
-
+            logger.error("查询本地Ip异常",e);
         }
 
         List<WebTask> waitTasks = webTaskMapper.findWaitingTaskByIp(hostAddress);

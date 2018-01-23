@@ -65,8 +65,6 @@ public class AutoCommentRunnable implements Runnable {
                         WebDriverConstants.fire_fox_0_19_1);
                 driver = new FirefoxDriver(options);
                 driver.manage().window().setSize(new Dimension(1024 ,1024));
-
-//                driver.manage().window().maximize();
                 this.executeStart();
             }
         } catch (Exception e) {

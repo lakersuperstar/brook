@@ -11,6 +11,7 @@ import com.sk.brook.service.util.CommentPerNum;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
@@ -56,11 +57,16 @@ public class AutoCommentRunnable implements Runnable {
             if (this.isRunnable()) {
                 FirefoxOptions options = new FirefoxOptions();
                 options.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,true);
+                FirefoxProfile profile = new FirefoxProfile();
+                profile.setPreference("layout.css.devPixelsPerPx","0.7");
+                options.setProfile(profile);
                 //options.setBinary("D:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
                 System.setProperty("webdriver.gecko.driver",
                         WebDriverConstants.fire_fox_0_19_1);
                 driver = new FirefoxDriver(options);
-                driver.manage().window().maximize();
+                driver.manage().window().setSize(new Dimension(1024 ,1024));
+
+//                driver.manage().window().maximize();
                 this.executeStart();
             }
         } catch (Exception e) {

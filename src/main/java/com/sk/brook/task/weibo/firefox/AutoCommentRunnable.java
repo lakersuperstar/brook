@@ -99,7 +99,6 @@ public class AutoCommentRunnable implements Runnable {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         logger.info("准备打开weibo主页。。。。。。" + this.mainIndex);
         driver.get(this.mainIndex);
-        driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.manage().deleteAllCookies();
         this.sleep3s();
         logger.info("打开微博主页面。。。。。" + driver.getCurrentUrl());
@@ -112,6 +111,7 @@ public class AutoCommentRunnable implements Runnable {
     private void setCookie() {
         logger.info("设置Cookie开始");
         List<WebCookie> webCookies = this.serviceHolder.getWebCookieService().findWebCookie(webTask.getWebId());
+        logger.info("cookie:"+webCookies);
         if(webCookies == null || webCookies.size() == 0){
             return;
         }else{
@@ -251,10 +251,12 @@ public class AutoCommentRunnable implements Runnable {
         logger.info("已经打开登陆页面：" + driver.getCurrentUrl());
         this.sleep(10000);
         WebElement loginName = driver.findElement(By.id("loginname"));
+        loginName.clear();
         this.sleep(10000);
         loginName.sendKeys(webInfo.getUserName());
         this.sleep(5000);
         WebElement loginPassword = driver.findElement(By.name("password"));
+        loginPassword.clear();
         this.sleep(10000);
         loginPassword.sendKeys(webInfo.getUserPwd());
         this.sleep(5000);

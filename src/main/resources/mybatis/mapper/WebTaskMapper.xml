@@ -32,11 +32,11 @@
 
 
 
-  <select id="findWaitingTaskByIp" resultMap="BaseResultMap"  parameterType="java.lang.String"  >
+  <select id="findWaitingTaskByIp" resultMap="BaseResultMap"  parameterType="java.util.Map"  >
     select
     <include refid="Base_Column_List" />
     from web_task
-    where yn=1 and status=0 and (NOW()-10*100) > update_date and update_date>= DATE_SUB(curdate(),INTERVAL 0 DAY) and ip_str=#{ipStr,jdbcType=VARCHAR} and 150 > num
+    where yn=1 and status=0 and (NOW()-10*100) > update_date and update_date>= DATE_SUB(curdate(),INTERVAL 0 DAY) and ip_str=#{ipStr,jdbcType=VARCHAR} and #{num,jdbcType=INTEGER} > num
   </select>
 
 

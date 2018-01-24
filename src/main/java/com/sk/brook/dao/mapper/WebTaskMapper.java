@@ -3,6 +3,7 @@ package com.sk.brook.dao.mapper;
 import com.sk.brook.dao.domain.WebTask;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WebTaskMapper {
     int deleteByPrimaryKey(Integer webId);
@@ -19,7 +20,7 @@ public interface WebTaskMapper {
 
     List<WebTask> findWaitingTask();
 
-    List<WebTask> findWaitingTaskByIp(String ip);
+    List<WebTask> findWaitingTaskByIp(Map<String,Object> mapParam);
 
     List<WebTask> findAllTask();
 

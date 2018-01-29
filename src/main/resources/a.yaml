@@ -1,0 +1,8 @@
+---
+site:
+     name: sina
+     url: http://sina.com.cn
+---
+site:
+     name: baidu
+     url: http://www.baidu.com
